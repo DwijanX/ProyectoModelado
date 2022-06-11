@@ -21,7 +21,7 @@ def ProcessImg(PilImg,ApplyWhitePatch):
         npImg=WhitePatch(npImg)
     return npImg
 
-def getArrayOfImagesFromDir(dir,label,Rotate=False,ApplyWhitePatch=True):
+def getArrayOfImagesFromDir(dir,label,Rotate=False,ApplyWhitePatch=False):
     count=0
     Images=[]
     for filename in os.listdir(dir):
@@ -54,46 +54,48 @@ directory6 = '../Images/Soda/M.Diet'
 directory7 = '../Images/Soda/P.cherry'
 directory9 = '../Images/Soda/P.Orig'
 directory8 = '../Images/Alcohol/Copas'
-directory10 = '../Images/RandomImgs'
 
-#0 nada
-#1 soda
-#2 tarro de cerveza
-#3 botella de alcohol
-#4 lata de alcohol
-#5 copas de vino
-X1,Y1=getArrayOfImagesFromDir(directory1,2)
-X2,Y2=getArrayOfImagesFromDir(directory2,3)
+
+
+#0 soda
+#1 tarro de cerveza
+#2 botella de alcohol
+#3 lata de alcohol
+#4 copas de vino
+X1,Y1=getArrayOfImagesFromDir(directory5,0)
+X2,Y2=getArrayOfImagesFromDir(directory3,1)
 X=numpy.append(X1,X2,axis=0)
 Y=numpy.append(Y1,Y2,axis=0)
-X3,Y3=getArrayOfImagesFromDir(directory3,4,True)
+"""X3,Y3=getArrayOfImagesFromDir(directory7,0,True)
 X=numpy.append(X,X3,axis=0)
 Y=numpy.append(Y,Y3,axis=0)
-X4,Y4=getArrayOfImagesFromDir(directory4,3,True)
+X4,Y4=getArrayOfImagesFromDir(directory8,0,True)
+X=numpy.append(X,X4,axis=0)
+Y=numpy.append(Y,Y4,axis=0)
+X4,Y4=getArrayOfImagesFromDir(directory9,0,True)
 X=numpy.append(X,X4,axis=0)
 Y=numpy.append(Y,Y4,axis=0)
 
-X5,Y5=getArrayOfImagesFromDir(directory5,1,ApplyWhitePatch=False)
+
+X5,Y5=getArrayOfImagesFromDir(directory3,1,ApplyWhitePatch=False)
 X=numpy.append(X,X5,axis=0)
-Y=numpy.append(Y,Y5,axis=0)
-X6,Y6=getArrayOfImagesFromDir(directory6,1,ApplyWhitePatch=False)
+Y=numpy.append(Y,Y5,axis=0)"""
+"""
+X6,Y6=getArrayOfImagesFromDir(directory6,0,ApplyWhitePatch=False)
 X=numpy.append(X,X6,axis=0)
 Y=numpy.append(Y,Y6,axis=0)
-X7,Y7=getArrayOfImagesFromDir(directory7,1,ApplyWhitePatch=False)
+X7,Y7=getArrayOfImagesFromDir(directory7,0,ApplyWhitePatch=False)
 X=numpy.append(X,X7,axis=0)
 Y=numpy.append(Y,Y7,axis=0)
 
-X8,Y8=getArrayOfImagesFromDir(directory8,5)
+X8,Y8=getArrayOfImagesFromDir(directory8,4)
 X=numpy.append(X,X8,axis=0)
 Y=numpy.append(Y,Y8,axis=0)
 
-X9,Y9=getArrayOfImagesFromDir(directory9,1,ApplyWhitePatch=False)
+X9,Y9=getArrayOfImagesFromDir(directory9,0,ApplyWhitePatch=False)
 X=numpy.append(X,X9,axis=0)
 Y=numpy.append(Y,Y9,axis=0)
-
-X10,Y10=getArrayOfImagesFromDir(directory10,0)
-X=numpy.append(X,X10,axis=0)
-Y=numpy.append(Y,Y10,axis=0)
+"""
 
 
 print(X.shape)
