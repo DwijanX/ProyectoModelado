@@ -7,7 +7,7 @@ import { Camera, CameraType } from 'expo-camera';
 import { Icon } from 'react-native-elements';
 
 import { Buffer } from "buffer";
-
+import axios from 'axios';
 
 
 export default function App() {
@@ -45,14 +45,16 @@ export default function App() {
     console.log("safdsfda")
 
     let ImgBytes = Buffer.from(photo.base64, "base64");
-    ans=await fetch("http://192.168.0.79:5000/api/test", {
-      method: 'POST',
-      body: {data:ImgBytes},
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-    }).then(console.log("tdsa"));
-    console.log(ans)
+    axios({
+      method: 'post',
+      url:"http://49fd-190-11-78-113.ngrok.io"+"/api/test",
+      headers: {}, 
+      data: {
+        img: ImgBytes, // This is the body part
+      }
+    }).then((response) => {
+      console.log(response.data);
+    });
   }
   const getCamera=()=>
   {

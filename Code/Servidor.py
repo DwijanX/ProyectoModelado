@@ -1,4 +1,4 @@
-from flask import Flask, request, Response
+from flask import Flask, request, Response,jsonify
 import jsonpickle
 import numpy
 import cv2
@@ -8,10 +8,12 @@ from torchvision import datasets, transforms
 import torch.nn.functional as F
 from PIL import Image
 import json
+from flask_ngrok import run_with_ngrok
 import base64
+import matplotlib.pyplot as pl
 
 app = Flask(__name__)
-
+run_with_ngrok(app)
 # instanciamos nuestra red
 transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
 model_ft = torch.load("Code\mi_modeloDeAlcohol.pt")
@@ -47,15 +49,14 @@ def ProcessImg(Img):
                 cv2.putText(Img,str(ans),(x,y-20),cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0))
         return Img
 
-@app.route('/api/test', methods=['POST'])
+@app.route('/api/test', methods=['POST','GET'])
 def test():
     r = request
-    print("se ingresa a la api")
-    # convert string of image data to uint8
-    nparr = numpy.fromstring(r.data, numpy.uint8)
-    # decode image
-    imagen = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    Ans=ProcessImg(imagen)
+    img = Image.frombuffer(r.data, numpy.uint8)
+    
+    print(type(img))
+    print(img.shape)
+    Ans=ProcessImg(img)
     data = {}
     data['img'] = base64.encodebytes(Ans).decode('utf-8')
     response_pickled = jsonpickle.encode(data)
@@ -64,3 +65,4 @@ def test():
 
 if __name__ == '__main__':
     app.run()
+
