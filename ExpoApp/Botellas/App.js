@@ -16,6 +16,8 @@ export default function App() {
   const [cameraType, setcameraType] = useState(CameraType.back);
   const [ShowingPhoto,setShowingPhoto]=useState(false)
   const [photo,setPhoto]=useState();
+  const [AnsweredBase64Img,setAnsweredBase64Img]=useState();
+  const [JustAnswered,setJustAnswered]=useState(false)
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -39,21 +41,22 @@ export default function App() {
     let newPhoto=await cameraref.current.takePictureAsync(options)
     setPhoto(newPhoto)
     setShowingPhoto(true)
+
   }
   const SendToAnalize= async() =>
   {
     console.log("safdsfda")
-
-    let ImgBytes = Buffer.from(photo.base64, "base64");
+    var bodyFormData = new FormData();
+    bodyFormData.append('img', photo.base64);
+    //let ImgBytes = Buffer.from(photo.base64, "base64");
     axios({
       method: 'post',
-      url:"http://49fd-190-11-78-113.ngrok.io"+"/api/test",
-      headers: {}, 
-      data: {
-        img: ImgBytes, // This is the body part
-      }
+      url:"http://7ba2-190-11-78-113.ngrok.io"+"/api/test",
+      headers: { "Content-Type": "multipart/form-data" }, 
+      data:bodyFormData
     }).then((response) => {
-      console.log(response.data);
+      setAnsweredBase64Img(response.data["img"])
+      setJustAnswered(true)
     });
   }
   const getCamera=()=>
@@ -74,16 +77,34 @@ export default function App() {
   }
   const getImageComp=()=>
   {
-    return(
-      <SafeAreaView style={styles.container}>
-        <Image style={{flex:1}}
-        source={{uri:"data:image/jpg;base64,"+photo.base64}}
-        />
-        <Button title="Take Another Photo" onPress={()=>setShowingPhoto(false)} />
-        <Button title="Scan" onPress={SendToAnalize}/>
-      </SafeAreaView>
-
-    )
+    if (JustAnswered==false)
+    {
+      return(
+        <SafeAreaView style={styles.container}>
+          <Image style={{flex:1}}
+          source={{uri:"data:image/jpg;base64,"+photo.base64}}
+          />
+          <Button title="Take Another Photo" onPress={()=>setShowingPhoto(false)} />
+          <Button title="Scan" onPress={SendToAnalize}/>
+        </SafeAreaView>
+  
+      )
+    }
+    else
+    {
+      return(
+        <SafeAreaView style={styles.container}>
+          <Image style={{flex:1}}
+          source={{uri:"data:image/jpg;base64,"+AnsweredBase64Img}}
+          />
+          <Button title="Take Another Photo" onPress={()=>{
+            setJustAnswered(false)
+            setShowingPhoto(false)}} />
+        </SafeAreaView>
+  
+      )
+    }
+    
   }
   return (
 

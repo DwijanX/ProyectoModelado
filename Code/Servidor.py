@@ -11,6 +11,7 @@ import json
 from flask_ngrok import run_with_ngrok
 import base64
 import matplotlib.pyplot as pl
+from io import BytesIO
 
 app = Flask(__name__)
 run_with_ngrok(app)
@@ -45,14 +46,28 @@ def ProcessImg(Img):
                 ansvec = F.log_softmax(model_ft(bottle))
                 ans=ansvec.argmax().item()
                 #identified=clasificador.predict(JustBottle.reshape(1,-1))
-                print(ans)
+                #print(ans)
                 cv2.putText(Img,str(ans),(x,y-20),cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0))
         return Img
 
 @app.route('/api/test', methods=['POST','GET'])
 def test():
     r = request
-    img = Image.frombuffer(r.data, numpy.uint8)
+    Img64=r.form.get("img")
+    im_bytes = base64.b64decode(Img64)
+    im_arr = numpy.frombuffer(im_bytes, dtype=numpy.uint8)  # im_arr is one-dim Numpy array
+    img = cv2.imdecode(im_arr, flags=cv2.IMREAD_COLOR)
+    #print(img)
+    #print(type(img))
+    Ans=ProcessImg(img)
+    pil_img = Image.fromarray(Ans)
+    buff = BytesIO()
+    pil_img.save(buff, format="JPEG")
+    new_image_string = base64.b64encode(buff.getvalue()).decode("utf-8")
+    data = {}
+    data['img'] =new_image_string
+    response_pickled = jsonpickle.encode(data)
+    return Response(response=response_pickled, status=200, mimetype="application/json")
     
     print(type(img))
     print(img.shape)
