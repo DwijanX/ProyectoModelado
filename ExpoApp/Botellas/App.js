@@ -6,6 +6,8 @@ import { color,Button  } from '@rneui/base';
 import { Camera, CameraType } from 'expo-camera';
 import { Icon } from 'react-native-elements';
 
+import { Buffer } from "buffer";
+
 
 
 export default function App() {
@@ -40,7 +42,17 @@ export default function App() {
   }
   const SendToAnalize= async() =>
   {
-    
+    console.log("safdsfda")
+
+    let ImgBytes = Buffer.from(photo.base64, "base64");
+    ans=await fetch("http://192.168.0.79:5000/api/test", {
+      method: 'POST',
+      body: {data:ImgBytes},
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+    }).then(console.log("tdsa"));
+    console.log(ans)
   }
   const getCamera=()=>
   {
@@ -66,7 +78,7 @@ export default function App() {
         source={{uri:"data:image/jpg;base64,"+photo.base64}}
         />
         <Button title="Take Another Photo" onPress={()=>setShowingPhoto(false)} />
-        <Button title="Scan" onPress={()=>SendToAnalize}/>
+        <Button title="Scan" onPress={SendToAnalize}/>
       </SafeAreaView>
 
     )
