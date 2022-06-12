@@ -1,4 +1,3 @@
-#%%
 import torch
 from time import time
 from torchvision import transforms

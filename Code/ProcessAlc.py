@@ -47,31 +47,42 @@ def getArrayOfImagesFromDir(dir,label,Rotate=False,ApplyWhitePatch=False):
 
 directory1 = '../Images/Alcohol/Beer'
 directory2 = '../Images/Alcohol/botellas'
-directory3 = '../Images/Alcohol/cans'
-directory4 = '../Images/Alcohol/RotateImagesBottles'
+
+
 directory5 = '../Images/Soda/M.Beer'
-directory6 = '../Images/Soda/M.Diet'
-directory7 = '../Images/Soda/P.cherry'
+directory6 = '../Images/Soda/CanadaDry/CanadaDry'
 directory9 = '../Images/Soda/P.Orig'
-directory8 = '../Images/Alcohol/Copas'
+directory7 = '../Images/Soda/P.cherry'
 
 
+directory3 = '../Images/Alcohol/cans'
+directory8 = '../Images/Alcohol/cansRodri'
 
 #0 soda
 #1 tarro de cerveza
 #2 botella de alcohol
 #3 lata de alcohol
 #4 copas de vino
-X1,Y1=getArrayOfImagesFromDir(directory5,0)
-X2,Y2=getArrayOfImagesFromDir(directory3,1)
+X1,Y1=getArrayOfImagesFromDir(directory3,1)
+X2,Y2=getArrayOfImagesFromDir(directory8,1)
 X=numpy.append(X1,X2,axis=0)
 Y=numpy.append(Y1,Y2,axis=0)
-"""X3,Y3=getArrayOfImagesFromDir(directory7,0,True)
+X3,Y3=getArrayOfImagesFromDir(directory5,0,True)
 X=numpy.append(X,X3,axis=0)
 Y=numpy.append(Y,Y3,axis=0)
-X4,Y4=getArrayOfImagesFromDir(directory8,0,True)
+
+
+X4,Y4=getArrayOfImagesFromDir(directory6,0,True)
 X=numpy.append(X,X4,axis=0)
 Y=numpy.append(Y,Y4,axis=0)
+X4,Y4=getArrayOfImagesFromDir(directory9,0,True)
+X=numpy.append(X,X4,axis=0)
+Y=numpy.append(Y,Y4,axis=0)
+X4,Y4=getArrayOfImagesFromDir(directory7,0,True)
+X=numpy.append(X,X4,axis=0)
+Y=numpy.append(Y,Y4,axis=0)
+
+"""
 X4,Y4=getArrayOfImagesFromDir(directory9,0,True)
 X=numpy.append(X,X4,axis=0)
 Y=numpy.append(Y,Y4,axis=0)
