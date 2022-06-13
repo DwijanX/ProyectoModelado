@@ -1,12 +1,12 @@
 #%%
 import cv2
 from cv2 import INTER_AREA
-import torch
 import matplotlib.pyplot as pl
 import os
 import numpy
 from PIL import Image
 import h5py
+from skimage.feature import hog
 # assign directory
 
 
@@ -14,14 +14,17 @@ def WhitePatch(Img):
     Img_mean = (Img*1.0 / Img.mean(axis=(0,1)))
     return Img_mean
 
-def ProcessImg(PilImg,ApplyWhitePatch):
+def ProcessImg(PilImg,ApplyWhitePatch,HOG=False):
     PilImg = PilImg.resize((128, 128), Image.ANTIALIAS)
     npImg = numpy.array(PilImg) 
+    if HOG:
+        fd, npImg = hog(npImg, orientations=9, pixels_per_cell=(8, 8),
+                	cells_per_block=(2, 2), visualize=True, channel_axis=-1)
     if ApplyWhitePatch:
         npImg=WhitePatch(npImg)
     return npImg
 
-def getArrayOfImagesFromDir(dir,label,Rotate=False,ApplyWhitePatch=False):
+def getArrayOfImagesFromDir(dir,label,Rotate=False,ApplyWhitePatch=False,HOG=False):
     count=0
     Images=[]
     for filename in os.listdir(dir):
@@ -31,10 +34,10 @@ def getArrayOfImagesFromDir(dir,label,Rotate=False,ApplyWhitePatch=False):
             if Rotate:
                 img = img.rotate(-90, Image.NEAREST, expand = 1)
             
-            img=ProcessImg(img,ApplyWhitePatch)
-            if img.shape!=(128,128,3):
+            img=ProcessImg(img,ApplyWhitePatch,HOG)
+            """if img.shape!=(128,128,3):
                 print(f)
-                print(img.shape)
+                print(img.shape)"""
             #pl.imshow(img)
             #pl.show()
             count+=1
@@ -63,22 +66,22 @@ directory8 = '../Images/Alcohol/cansRodri'
 #2 botella de alcohol
 #3 lata de alcohol
 #4 copas de vino
-X1,Y1=getArrayOfImagesFromDir(directory3,1)
-X2,Y2=getArrayOfImagesFromDir(directory8,1)
+X1,Y1=getArrayOfImagesFromDir(directory3,1,True,HOG=False)
+X2,Y2=getArrayOfImagesFromDir(directory8,1,HOG=False)
 X=numpy.append(X1,X2,axis=0)
 Y=numpy.append(Y1,Y2,axis=0)
-X3,Y3=getArrayOfImagesFromDir(directory5,0,True)
+X3,Y3=getArrayOfImagesFromDir(directory5,0,HOG=False)
 X=numpy.append(X,X3,axis=0)
 Y=numpy.append(Y,Y3,axis=0)
 
 
-X4,Y4=getArrayOfImagesFromDir(directory6,0,True)
+X4,Y4=getArrayOfImagesFromDir(directory6,0,HOG=False)
 X=numpy.append(X,X4,axis=0)
 Y=numpy.append(Y,Y4,axis=0)
-X4,Y4=getArrayOfImagesFromDir(directory9,0,True)
+X4,Y4=getArrayOfImagesFromDir(directory9,0,HOG=False)
 X=numpy.append(X,X4,axis=0)
 Y=numpy.append(Y,Y4,axis=0)
-X4,Y4=getArrayOfImagesFromDir(directory7,0,True)
+X4,Y4=getArrayOfImagesFromDir(directory7,0,HOG=False)
 X=numpy.append(X,X4,axis=0)
 Y=numpy.append(Y,Y4,axis=0)
 

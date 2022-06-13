@@ -19,10 +19,10 @@ img=cv2.imread("Code\\test.jpg")
 
 def ProcessImg(Img):
         GrayImage=cv2.cvtColor(Img,cv2.COLOR_BGR2GRAY)
-        thresh=125
+        thresh=150
         ret,thresh_img = cv2.threshold(GrayImage, thresh, 255, cv2.THRESH_BINARY)
-        pl.imshow(thresh_img)
-        pl.show()
+        #pl.imshow(thresh_img)
+        #pl.show()
         grupos,_=cv2.findContours(thresh_img,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
         ventanas= [cv2.boundingRect(g) for g in grupos]
         for bots in ventanas:

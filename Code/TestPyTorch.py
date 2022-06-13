@@ -8,10 +8,14 @@ import numpy
 import h5py
 from torch.utils.data import Dataset
 import matplotlib.pyplot as pl
+from skimage.feature import hog
 
+#transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+#Para HOG
 transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
+
 #model_ft = torch.load("Gatos\Files\mi_modeloDeGatos.pt")
-model_ft = torch.load("Code\mi_modeloDeAlcohol.pt")
+model_ft = torch.load("Code\mi_modeloDeAlcoholHOG.pt")
 
 
 def ProbarLambda(FileDirection,XName,YNAME):
@@ -22,12 +26,16 @@ def ProbarLambda(FileDirection,XName,YNAME):
         X=DataFile[XName][:]
         Y=DataFile[YNAME][:]
         for x in X:
-            bottle = transform(x)
+            #pl.imshow(x)
+            #pl.show()
+            bot = x.astype(numpy.float32)
+            bottle = transform(bot)
             bottle.unsqueeze_(dim=0)
             bottle = Variable(bottle)
             bottle = bottle.view(bottle.shape[0], -1)
             #pl.imshow(gato.reshape(64*3,64))
             #pl.show()
+            
             ansvec = F.log_softmax(model_ft(bottle))
             ans=ansvec.argmax().item()
             
@@ -54,7 +62,7 @@ def ProbarLambda(FileDirection,XName,YNAME):
 
 
 #Suc,Err=ProbarLambda("Gatos\Files\gatillos_test.h5","test_set_x","test_set_y")
-Suc,Err=ProbarLambda("Images\DatasetAlcohol.h5","X_TrainSet","Y_TrainSet")
+Suc,Err=ProbarLambda("Images\DatasetAlcoholHOG.h5","X_TrainSet","Y_TrainSet")
 
 print("aciertos",Suc)
 print("fallos",Err)
