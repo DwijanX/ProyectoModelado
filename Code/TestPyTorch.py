@@ -36,7 +36,7 @@ def ProbarLambda(FileDirection,XName,YNAME):
             #pl.imshow(gato.reshape(64*3,64))
             #pl.show()
             
-            ansvec = F.log_softmax(model_ft(bottle))
+            ansvec = F.alpha_dropout(model_ft(bottle))
             ans=ansvec.argmax().item()
             
             if(ans!=Y[(ErrorCount+SuccessCount)] ):

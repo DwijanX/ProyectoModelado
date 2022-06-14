@@ -39,12 +39,12 @@ capa_salida = 2
 
 modelo = nn.Sequential(nn.Linear(capa_entrada, capas_ocultas[0]), nn.ReLU(),
                        nn.Linear(capas_ocultas[0], capas_ocultas[1]), nn.ReLU(),
-                       nn.Linear(capas_ocultas[1], capa_salida), nn.LogSoftmax())
+                       nn.Linear(capas_ocultas[1], capa_salida), nn.AlphaDropout())
 
 j = nn.CrossEntropyLoss()
 
 # entrenamiento de la red
-optimizador = optim.Adam(modelo.parameters(),  lr=0.0025)
+optimizador = optim.Adam(modelo.parameters(),  lr=0.005)
 tiempo = time()
 epochs = 10
 for e in range(epochs):

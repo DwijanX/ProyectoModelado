@@ -21,6 +21,7 @@ model_ft = torch.load("Code\mi_modeloDeAlcoholHOG.pt")
 #img=cv2.imread("Code\\test.jpg")
 #img=cv2.imread("Code\\Test2.jpg")
 img=cv2.imread("Code\BotLata.jpg")
+#img=cv2.imread("Code\Test80.jpg")
 
 
 def ProcessImg(Img):
@@ -49,7 +50,7 @@ def ProcessImg(Img):
                 bottle.unsqueeze_(dim=0)
                 bottle = Variable(bottle)
                 bottle = bottle.view(bottle.shape[0], -1)
-                ansvec = F.log_softmax(model_ft(bottle))
+                ansvec = F.alpha_dropout(model_ft(bottle))
                 ans=ansvec.argmax().item()
                 cv2.putText(Img,str(ans),(x,y+50),cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0))
         return Img

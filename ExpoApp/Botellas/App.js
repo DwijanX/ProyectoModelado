@@ -51,7 +51,7 @@ export default function App() {
     //let ImgBytes = Buffer.from(photo.base64, "base64");
     axios({
       method: 'post',
-      url:"http://7ba2-190-11-78-113.ngrok.io"+"/api/test",
+      url:"http://0ec4-190-11-78-113.ngrok.io"+"/api/test",
       headers: { "Content-Type": "multipart/form-data" }, 
       data:bodyFormData
     }).then((response) => {
