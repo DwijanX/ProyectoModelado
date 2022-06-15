@@ -30,17 +30,17 @@ def ProcessImg(Img):
         #pl.show()
         grupos,_=cv2.findContours(thresh_img,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
         ventanas= [cv2.boundingRect(g) for g in grupos]
-        fd, HogImg = hog(Img, orientations=9, pixels_per_cell=(8, 8),cells_per_block=(2, 2), visualize=True, channel_axis=-1)
         for bots in ventanas:
             (x, y, w, h) = bots
             espacio=int(bots[3]*1.6)
             p1=int((bots[1]+bots[3]//2))-espacio//2
             p2=int((bots[0]+bots[2]//2))-espacio//2
-
-            JustBottle = HogImg[y:y + h+espacio,x:x+w+espacio]
+            JustBottleHog = Img[y:y + h+espacio,x:x+w+espacio]
             
-            if  w>30 and h>30 and espacio>40:
-                pilImg = Image.fromarray(JustBottle)
+            if  w>30 and h>30:
+                #fd, JustBottleHog = hog(JustBottle, orientations=9, pixels_per_cell=(8, 8),
+                 #       cells_per_block=(2, 2), visualize=True, channel_axis=-1)
+                pilImg = Image.fromarray(JustBottleHog)
                 JustBottleHog = pilImg.resize((128,128))
                 cv2.rectangle(Img, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 bottle = transform(JustBottleHog)
@@ -51,7 +51,7 @@ def ProcessImg(Img):
                 ans=ansvec.argmax().item()
                 cv2.putText(Img,str(ans),(x,y+50),cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0))
         return Img
-
+        
 @app.route('/api/test', methods=['POST','GET'])
 def test():
     r = request
