@@ -6,7 +6,6 @@ import { color,Button  } from '@rneui/base';
 import { Camera, CameraType } from 'expo-camera';
 import { Icon } from 'react-native-elements';
 
-import { Buffer } from "buffer";
 import axios from 'axios';
 
 

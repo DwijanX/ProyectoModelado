@@ -13,8 +13,8 @@ import torch
 from skimage.feature import hog
 
 transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (0.5,))])
-#model_ft = torch.load("Code\mi_modeloDeAlcohol.pt")
-model_ft = torch.load("./mi_modeloDeAlcoholHOG.pt")
+model_ft = torch.load("Code\mi_modeloDeAlcohol.pt")
+#model_ft = torch.load("./mi_modeloDeAlcoholHOG.pt")
 def ProcessImg(Img):
         GrayImage=cv2.cvtColor(Img,cv2.COLOR_BGR2GRAY)
         thresh=150
@@ -28,11 +28,11 @@ def ProcessImg(Img):
             espacio=int(bots[3]*1.6)
             p1=int((bots[1]+bots[3]//2))-espacio//2
             p2=int((bots[0]+bots[2]//2))-espacio//2
-            JustBottle = Img[y:y + h+espacio,x:x+w+espacio]
+            JustBottleHog = Img[y:y + h+espacio,x:x+w+espacio]
             
             if  w>30 and h>30:
-                fd, JustBottleHog = hog(JustBottle, orientations=9, pixels_per_cell=(8, 8),
-                        cells_per_block=(2, 2), visualize=True, channel_axis=-1)
+                #fd, JustBottleHog = hog(JustBottle, orientations=9, pixels_per_cell=(8, 8),
+                 #       cells_per_block=(2, 2), visualize=True, channel_axis=-1)
                 pilImg = Image.fromarray(JustBottleHog)
                 JustBottleHog = pilImg.resize((128,128))
                 cv2.rectangle(Img, (x, y), (x + w, y + h), (0, 255, 0), 2)

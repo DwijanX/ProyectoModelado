@@ -57,6 +57,7 @@ directory6 = '../Images/Soda/CanadaDry/CanadaDry'
 directory9 = '../Images/Soda/P.Orig'
 directory7 = '../Images/Soda/P.cherry'
 
+directory10 = '../Images/Soda/M.Diet'
 
 directory3 = '../Images/Alcohol/cans'
 directory8 = '../Images/Alcohol/cansRodri'
@@ -70,11 +71,10 @@ X1,Y1=getArrayOfImagesFromDir(directory3,1,True,HOG=False)
 X2,Y2=getArrayOfImagesFromDir(directory8,1,HOG=False)
 X=numpy.append(X1,X2,axis=0)
 Y=numpy.append(Y1,Y2,axis=0)
+
 X3,Y3=getArrayOfImagesFromDir(directory5,0,HOG=False)
 X=numpy.append(X,X3,axis=0)
 Y=numpy.append(Y,Y3,axis=0)
-
-
 X4,Y4=getArrayOfImagesFromDir(directory6,0,HOG=False)
 X=numpy.append(X,X4,axis=0)
 Y=numpy.append(Y,Y4,axis=0)
@@ -84,6 +84,10 @@ Y=numpy.append(Y,Y4,axis=0)
 X4,Y4=getArrayOfImagesFromDir(directory7,0,HOG=False)
 X=numpy.append(X,X4,axis=0)
 Y=numpy.append(Y,Y4,axis=0)
+X4,Y4=getArrayOfImagesFromDir(directory10,0,HOG=False)
+X=numpy.append(X,X4,axis=0)
+Y=numpy.append(Y,Y4,axis=0)
+
 
 """
 X4,Y4=getArrayOfImagesFromDir(directory9,0,True)
